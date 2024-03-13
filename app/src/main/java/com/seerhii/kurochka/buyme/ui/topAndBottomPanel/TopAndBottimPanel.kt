@@ -1,4 +1,4 @@
-package com.seerhii.kurochka.buyme.ui.theme.topAndBottomPanel
+package com.seerhii.kurochka.buyme.ui.topAndBottomPanel
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.PaddingValues
@@ -111,7 +111,7 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
             }
         },
         actions = {
-            if(false){
+            if(true){
                 IconButton(onClick = { /* do something */ }) {
                     Icon(
                         imageVector = Icons.Filled.Person,
@@ -127,9 +127,7 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
             }else{
 
             }
-
         },
-
         scrollBehavior = scrollBehavior,
     )
 }
