@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import com.seerhii.kurochka.buyme.ui.addNewItemPage.AddNewItemPage
 import com.seerhii.kurochka.buyme.ui.homePage.HomePage
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 import com.seerhii.kurochka.buyme.ui.topAndBottomPanel.BottomPanel
@@ -38,7 +39,8 @@ fun BuyMeApp() {
                 .padding(it),
             color = MaterialTheme.colorScheme.background
         ) {
-            HomePage()
+           // HomePage()
+            AddNewItemPage()
         }
     }
 }

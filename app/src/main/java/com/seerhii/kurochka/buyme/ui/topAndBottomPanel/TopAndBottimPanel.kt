@@ -90,14 +90,14 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
         ),
         title = {
             Text(
-                "Buy list",
+                "Add New Item",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
         navigationIcon = {
             IconButton(onClick = { /* do something */ }) {
-                if(true){
+                if(false){
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = "Localized description"
@@ -111,7 +111,7 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
             }
         },
         actions = {
-            if(true){
+            if(false){
                 IconButton(onClick = { /* do something */ }) {
                     Icon(
                         imageVector = Icons.Filled.Person,
