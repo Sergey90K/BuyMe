@@ -90,7 +90,7 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
         ),
         title = {
             Text(
-                "Add New Item",
+                "Appoint to buy",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

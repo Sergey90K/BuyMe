@@ -38,14 +38,13 @@ import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 
 @Composable
 fun AddNewItemPage() {
-    LazyColumn {
-        item { ShowAddNameField() }
-        item { ChoiceQuantity() }
-        item { ShowWhenNedIt() }
-        item { ShowSomeDetails() }
-        item { ShowButtonAddNewItem() }
-
-    }
+        LazyColumn {
+            item { ShowAddNameField() }
+            item { ChoiceQuantity() }
+            item { ShowWhenNedIt() }
+            item { ShowSomeDetails() }
+            item { ShowButtonAddNewItem() }
+        }
 }
 
 @Composable
@@ -182,7 +181,7 @@ fun ShowSomeDetails() {
 fun ShowButtonAddNewItem() {
     Row(
         Modifier
-            .padding(start = 5.dp, end = 5.dp, top = 35.dp, bottom = 5.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 35.dp, bottom = 10.dp)
             .fillMaxWidth(),
     ) {
         Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth(1f)) {
