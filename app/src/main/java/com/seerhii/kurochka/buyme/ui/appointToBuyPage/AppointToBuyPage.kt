@@ -15,7 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,8 +23,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.seerhii.kurochka.buyme.R
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 
 @Composable
@@ -40,13 +42,23 @@ fun AppointToBuyPage() {
 fun ShowDescription() {
     Row(
         Modifier
-            .padding(all = 5.dp)
+            .padding(all = dimensionResource(id = R.dimen.padding_medium))
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Selected 4/8", Modifier.paddingFromBaseline(top = 30.dp))
-        IconButton(onClick = { /*TODO*/ }, Modifier.paddingFromBaseline(top = 0.dp)) {
-            Icon(Icons.Outlined.Analytics, contentDescription = "Localized description")
+        Text(
+            text = "Selected 4/8", // inner text
+            Modifier.paddingFromBaseline(top = dimensionResource(id = R.dimen.padding_zero))
+        )
+        IconButton(
+            onClick = { },
+            Modifier.paddingFromBaseline(top = dimensionResource(id = R.dimen.padding_zero))
+        ) {
+            Icon(
+                Icons.Outlined.Analytics,
+                contentDescription = stringResource(R.string.sorted_icon)
+            )
         }
     }
 }
@@ -65,7 +77,7 @@ fun ShowCardWitchItem() {
     )
     Card(
         Modifier
-            .padding(all = 5.dp),
+            .padding(all = dimensionResource(id = R.dimen.padding_medium)),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)
     ) {
         Column {
@@ -75,7 +87,7 @@ fun ShowCardWitchItem() {
                     descriptionStr = list.descriptionStr,
                     quantityStr = list.quantityStr
                 )
-                Divider(thickness = 1.dp)
+                HorizontalDivider(thickness = dimensionResource(id = R.dimen.padding_min))
             }
         }
     }
@@ -86,7 +98,7 @@ fun InnerPartOfTheCard(alreadyCompleted: Boolean, descriptionStr: String, quanti
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(all = 5.dp),
+            .padding(all = dimensionResource(id = R.dimen.padding_medium)),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -97,15 +109,27 @@ fun InnerPartOfTheCard(alreadyCompleted: Boolean, descriptionStr: String, quanti
             Checkbox(
                 checked = alreadyCompleted,
                 onCheckedChange = {},
-                Modifier.padding(top = 2.dp, end = 2.dp, bottom = 2.dp),
+                Modifier.padding(
+                    top = dimensionResource(id = R.dimen.padding_small),
+                    end = dimensionResource(id = R.dimen.padding_small),
+                    bottom = dimensionResource(id = R.dimen.padding_small)
+                ),
                 colors = CheckboxDefaults.colors(MaterialTheme.colorScheme.onSurface)
             )
-            Text(text = descriptionStr, Modifier.padding(all = 2.dp))
+            Text(
+                text = descriptionStr,
+                Modifier.padding(all = dimensionResource(id = R.dimen.padding_small))
+            )
         }
 
         Text(
             text = quantityStr,
-            Modifier.padding(start = 2.dp, top = 2.dp, end = 5.dp, bottom = 2.dp)
+            Modifier.padding(
+                start = dimensionResource(id = R.dimen.padding_small),
+                top = dimensionResource(id = R.dimen.padding_small),
+                end = dimensionResource(id = R.dimen.padding_medium),
+                bottom = dimensionResource(id = R.dimen.padding_small)
+            )
         )
     }
 }
@@ -114,11 +138,16 @@ fun InnerPartOfTheCard(alreadyCompleted: Boolean, descriptionStr: String, quanti
 fun ShowButton() {
     Row(
         Modifier
-            .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
+            .padding(
+                start = dimensionResource(id = R.dimen.padding_big),
+                end = dimensionResource(id = R.dimen.padding_big),
+                top = dimensionResource(id = R.dimen.padding_big),
+                bottom = dimensionResource(id = R.dimen.padding_big)
+            )
             .fillMaxWidth(),
     ) {
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth(1f)) {
-            Text(text = "Appoint")
+        Button(onClick = { }, modifier = Modifier.fillMaxWidth(1f)) {
+            Text(text = stringResource(R.string.appoint))
         }
     }
 }

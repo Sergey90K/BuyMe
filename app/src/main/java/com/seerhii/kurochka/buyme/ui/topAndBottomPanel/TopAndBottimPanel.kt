@@ -3,9 +3,9 @@ package com.seerhii.kurochka.buyme.ui.topAndBottomPanel
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -33,7 +33,7 @@ import com.seerhii.kurochka.buyme.R
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 
 @Composable
-fun BottomPanel(modifier: Modifier = Modifier){
+fun BottomPanel(modifier: Modifier = Modifier) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
         modifier = modifier
@@ -42,7 +42,7 @@ fun BottomPanel(modifier: Modifier = Modifier){
             icon = {
                 Icon(
                     imageVector = Icons.Default.Home,
-                    contentDescription = null
+                    contentDescription = stringResource(R.string.home_icon)
                 )
             },
             label = {
@@ -55,7 +55,7 @@ fun BottomPanel(modifier: Modifier = Modifier){
             icon = {
                 Icon(
                     imageVector = Icons.Default.Notifications,
-                    contentDescription = null
+                    contentDescription = stringResource(R.string.notification_icon)
                 )
             },
             label = {
@@ -68,7 +68,7 @@ fun BottomPanel(modifier: Modifier = Modifier){
             icon = {
                 Icon(
                     imageVector = Icons.Default.AccountBalanceWallet,
-                    contentDescription = null
+                    contentDescription = stringResource(R.string.detail_icon)
                 )
             },
             label = {
@@ -90,41 +90,41 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
         ),
         title = {
             Text(
-                "Appoint to buy",
+                "Appoint to buy", // different text
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
         navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
-                if(false){
+            IconButton(onClick = { }) {
+                if (false) {
                     Icon(
                         imageVector = Icons.Filled.Menu,
-                        contentDescription = "Localized description"
+                        contentDescription = stringResource(R.string.menu_icon)
                     )
-                }else{
+                } else {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Localized description"
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_icon)
                     )
                 }
             }
         },
         actions = {
-            if(false){
-                IconButton(onClick = { /* do something */ }) {
+            if (true) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Filled.Person,
-                        contentDescription = "Localized description"
+                        contentDescription = stringResource(R.string.person_icon)
                     )
                 }
-                IconButton(onClick = { /* do something */ }) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Filled.AddCircleOutline,
-                        contentDescription = "Localized description"
+                        contentDescription = stringResource(R.string.add_icon)
                     )
                 }
-            }else{
+            } else {
 
             }
         },
@@ -134,14 +134,14 @@ fun TopPanel(scrollBehavior: TopAppBarScrollBehavior) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TestAllTopPanel(){
+fun TestAllTopPanel() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
 
         topBar = {
-                 TopPanel( scrollBehavior)
+            TopPanel(scrollBehavior)
         },
         {
             BottomAppBar {
@@ -156,10 +156,10 @@ fun TestAllTopPanel(){
 
 @Composable
 fun ScrollContent(innerPadding: PaddingValues) {
-   Text(text = "Hi")
 }
 
-@Preview(showBackground = true,
+@Preview(
+    showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 @Composable
@@ -168,14 +168,3 @@ fun GreetingPreviewTopPanel() {
         TestAllTopPanel()
     }
 }
-
-//@Preview(showBackground = true,
-//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-//)
-//@Composable
-//fun GreetingPreview() {
-//    BuyMeTheme {
-//        BottomPanel()
-//    }
-//}
-

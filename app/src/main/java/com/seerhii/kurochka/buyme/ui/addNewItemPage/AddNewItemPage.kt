@@ -32,30 +32,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.seerhii.kurochka.buyme.R
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 
 @Composable
 fun AddNewItemPage() {
-        LazyColumn {
-            item { ShowAddNameField() }
-            item { ChoiceQuantity() }
-            item { ShowWhenNedIt() }
-            item { ShowSomeDetails() }
-            item { ShowButtonAddNewItem() }
-        }
+    LazyColumn {
+        item { ShowAddNameField() }
+        item { ChoiceQuantity() }
+        item { ShowWhenNedIt() }
+        item { ShowSomeDetails() }
+        item { ShowButtonAddNewItem() }
+    }
 }
 
 @Composable
 fun ShowAddNameField() {
-    Row(modifier = Modifier.padding(all = 5.dp)) {
+    Row(modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_medium))) {
         TextField(
             value = "",
             onValueChange = {},
             label = {
                 Text(
-                    text = "Input what want buy",
+                    text = stringResource(R.string.what_you_need_to_buy),
                     style = MaterialTheme.typography.bodyMedium
                 )
             },
@@ -69,34 +71,41 @@ fun ShowAddNameField() {
 @Composable
 fun ChoiceQuantity() {
     Column(Modifier.fillMaxWidth(1F)) {
-        Row(Modifier.padding(start = 5.dp, end = 5.dp, top = 35.dp, bottom = 5.dp)) {
+        Row(
+            Modifier.padding(
+                start = dimensionResource(id = R.dimen.padding_medium),
+                end = dimensionResource(id = R.dimen.padding_medium),
+                top = dimensionResource(id = R.dimen.padding_double_big),
+                bottom = dimensionResource(id = R.dimen.padding_medium)
+            )
+        ) {
             Text(
-                text = "Choice quantity",
-                //    style = MaterialTheme.typography.bodyMedium
+                text = stringResource(R.string.choice_quantity),
+                // style = MaterialTheme.typography.bodyMedium
             )
         }
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(all = 5.dp),
+                .padding(all = dimensionResource(id = R.dimen.padding_medium)),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            RoundButton(buttonText = "1")
-            RoundButton(buttonText = "2")
-            RoundButton(buttonText = "3")
-            RoundButton(buttonText = "4")
-            RoundButton(buttonText = "5")
-            RoundButton(buttonText = "6")
-            RoundButton(buttonText = "7")
+            RoundButton(buttonText = stringResource(R.string._1))
+            RoundButton(buttonText = stringResource(R.string._2))
+            RoundButton(buttonText = stringResource(R.string._3))
+            RoundButton(buttonText = stringResource(R.string._4))
+            RoundButton(buttonText = stringResource(R.string._5))
+            RoundButton(buttonText = stringResource(R.string._6))
+            RoundButton(buttonText = stringResource(R.string._7))
         }
         Row(
             Modifier
-                .padding(all = 5.dp)
+                .padding(all = dimensionResource(id = R.dimen.padding_medium))
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            RoundBigButton(buttonText = "+10")
-            RoundBigButton(buttonText = "x10")
+            RoundBigButton(buttonText = stringResource(R.string._10))
+            RoundBigButton(buttonText = stringResource(R.string.x10))
             Row(Modifier.weight(1f, true)) {
                 ShowQuantityField()
             }
@@ -112,42 +121,50 @@ fun ShowWhenNedIt() {
     Column() {
         Row(
             Modifier
-                .padding(start = 5.dp, end = 5.dp, top = 35.dp, bottom = 5.dp)
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding_medium),
+                    end = dimensionResource(id = R.dimen.padding_medium),
+                    top = dimensionResource(id = R.dimen.padding_double_big),
+                    bottom = dimensionResource(id = R.dimen.padding_medium)
+                )
         ) {
-            Text(text = "When do you need it?")
+            Text(text = stringResource(R.string.when_do_you_need_it))
         }
         Row(
             Modifier
-                .padding(all = 5.dp)
+                .padding(all = dimensionResource(id = R.dimen.padding_medium))
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { },
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
-                    .padding(end = 5.dp)
+                    .padding(end = dimensionResource(id = R.dimen.padding_medium))
             ) {
-                Text("Samtimes", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.someday), style = MaterialTheme.typography.bodyMedium)
                 Icon(
                     imageVector = Icons.Filled.Timelapse,
-                    contentDescription = "Localized description",
-                    modifier = Modifier.padding(start = 5.dp)
+                    contentDescription = stringResource(R.string.someday_icon),
+                    modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { },
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onPrimaryContainer),
                 modifier = Modifier
                     .fillMaxWidth(1f)
-                    .padding(start = 5.dp)
+                    .padding(start = dimensionResource(id = R.dimen.padding_medium))
             ) {
                 Icon(
                     imageVector = Icons.Filled.CalendarMonth,
-                    contentDescription = "Localized description",
-                    modifier = Modifier.padding(end = 5.dp)
+                    contentDescription = stringResource(R.string.pick_date_icon),
+                    modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_medium))
                 )
-                Text("Pick date", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    stringResource(R.string.pick_date),
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }
@@ -158,19 +175,29 @@ fun ShowSomeDetails() {
     Column {
         Row(
             Modifier
-                .padding(start = 5.dp, end = 5.dp, top = 35.dp, bottom = 5.dp)
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding_medium),
+                    end = dimensionResource(id = R.dimen.padding_medium),
+                    top = dimensionResource(id = R.dimen.padding_double_big),
+                    bottom = dimensionResource(id = R.dimen.padding_medium)
+                )
         ) {
-            Text(text = "Some details")
+            Text(text = stringResource(R.string.some_details))
         }
         Row(Modifier.fillMaxWidth()) {
             TextField(
                 value = "",
                 onValueChange = {},
-                label = { Text(text = "Inpun Field", style = MaterialTheme.typography.bodyMedium) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.input_field),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(all = 5.dp)
-                    .height(150.dp),
+                    .padding(all = dimensionResource(id = R.dimen.padding_medium))
+                    .height(dimensionResource(id = R.dimen.height_input)),
                 maxLines = 4
             )
         }
@@ -181,11 +208,16 @@ fun ShowSomeDetails() {
 fun ShowButtonAddNewItem() {
     Row(
         Modifier
-            .padding(start = 10.dp, end = 10.dp, top = 35.dp, bottom = 10.dp)
+            .padding(
+                start = dimensionResource(id = R.dimen.padding_big),
+                end = dimensionResource(id = R.dimen.padding_big),
+                top = dimensionResource(id = R.dimen.padding_double_big),
+                bottom = dimensionResource(id = R.dimen.padding_big)
+            )
             .fillMaxWidth(),
     ) {
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth(1f)) {
-            Text(text = "Add new Items")
+        Button(onClick = { }, modifier = Modifier.fillMaxWidth(1f)) {
+            Text(text = stringResource(R.string.add_new_items))
         }
     }
 }
@@ -197,12 +229,12 @@ fun ShowQuantityField() {
         onValueChange = {},
         //shape = CircleShape,
         modifier = Modifier
-            .padding(start = 2.dp)
+            .padding(start = dimensionResource(id = R.dimen.padding_small))
             .clip(CircleShape),
         trailingIcon = {
             Icon(
                 imageVector = Icons.Filled.ArrowUpward,
-                contentDescription = "Localized description"
+                contentDescription = stringResource(R.string.value_icon)
             )
         }
     )
@@ -214,8 +246,8 @@ fun RoundButton(buttonText: String) {
         onClick = { },
         shape = CircleShape,
         modifier = Modifier
-            .size(50.dp)
-            .padding(all = 1.dp),
+            .size(dimensionResource(id = R.dimen.padding_elevated_button))
+            .padding(all = dimensionResource(id = R.dimen.padding_one)),
         contentPadding = ButtonDefaults.TextButtonContentPadding
     ) {
         Text(buttonText, style = MaterialTheme.typography.bodyMedium)
@@ -228,8 +260,8 @@ fun RoundBigButton(buttonText: String) {
         onClick = { },
         shape = CircleShape,
         modifier = Modifier
-            .size(60.dp)
-            .padding(all = 1.dp),
+            .size(dimensionResource(id = R.dimen.padding_round_button))
+            .padding(all = dimensionResource(id = R.dimen.padding_one)),
         contentPadding = ButtonDefaults.TextButtonContentPadding,
         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onPrimaryContainer)
     ) {
@@ -243,14 +275,12 @@ fun SelectionMenuChoice() {
     val options = listOf("pcs", "kg", "m", "sm", "$")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
-// We want to react on tap/press on TextField to show menu
     ExposedDropdownMenuBox(
-        modifier = Modifier.padding(start = 2.dp),
+        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_small)),
         expanded = expanded,
         onExpandedChange = { expanded = it },
     ) {
         TextField(
-            // The `menuAnchor` modifier must be passed to the text field for correctness.
             modifier = Modifier
                 .menuAnchor()
                 .clip(CircleShape),

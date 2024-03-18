@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Shortcut
+import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.ExpandCircleDown
 import androidx.compose.material.icons.filled.Shortcut
@@ -25,6 +27,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,8 +42,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.seerhii.kurochka.buyme.R
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,14 +55,12 @@ fun SelectionMenu() {
     val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
-// We want to react on tap/press on TextField to show menu
     ExposedDropdownMenuBox(
-        modifier = Modifier.padding(all = 2.dp),
+        modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_small)),
         expanded = expanded,
         onExpandedChange = { expanded = it },
     ) {
         TextField(
-            // The `menuAnchor` modifier must be passed to the text field for correctness.
             modifier = Modifier
                 .menuAnchor()
                 .clip(CircleShape),
@@ -89,20 +93,23 @@ fun SelectionMenu() {
 @Composable
 fun SortedMenu() {
     OutlinedButton(
-        onClick = { /* doSomething() */ },
+        onClick = {},
         Modifier
-            .size(width = 200.dp, height = 60.dp)
-            .padding(all = 2.dp)
+            .size(
+                width = dimensionResource(id = R.dimen.icon_width),
+                height = dimensionResource(id = R.dimen.icon_height)
+            )
+            .padding(all = dimensionResource(id = R.dimen.padding_small))
     ) {
         Text(
-            "Most urgent",
+            stringResource(R.string.most_urgent),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium
         )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Icon(
-            Icons.Outlined.Sort,
-            contentDescription = "Localized description",
+            Icons.AutoMirrored.Outlined.Sort,
+            contentDescription = stringResource(R.string.most_urgent_icon),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -112,7 +119,11 @@ fun SortedMenu() {
 fun FirstTape() {
     Row(
         modifier = Modifier
-            .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+            .padding(
+                start = dimensionResource(id = R.dimen.padding_medium),
+                end = dimensionResource(id = R.dimen.padding_medium),
+                top = dimensionResource(id = R.dimen.padding_medium)
+            )
             .fillMaxWidth(1f),
         // horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -120,10 +131,10 @@ fun FirstTape() {
             SelectionMenu()
         }
         Row(Modifier.weight(0.5f, true)) {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Filled.ExpandCircleDown,
-                    contentDescription = "Localized description"
+                    contentDescription = stringResource(R.string.more_options)
                 )
             }
         }
@@ -132,7 +143,10 @@ fun FirstTape() {
 
 @Composable
 fun SecondTape() {
-    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.padding(all = 5.dp)) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_medium))
+    ) {
         Row(Modifier.weight(1f, true)) {
             SelectionMenu()
         }
@@ -174,15 +188,25 @@ fun FirstCard() {
             "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
         ),
     )
-    Card(Modifier.padding(start = 2.dp, end = 2.dp, top = 5.dp, bottom = 5.dp)) {
+    Card(
+        Modifier.padding(
+            start = dimensionResource(id = R.dimen.padding_small),
+            end = dimensionResource(id = R.dimen.padding_small),
+            top = dimensionResource(id = R.dimen.padding_medium),
+            bottom = dimensionResource(id = R.dimen.padding_medium)
+        )
+    ) {
         Column(Modifier.fillMaxWidth()) {
-            Row(Modifier.padding(all = 10.dp)) {
-                Text(text = "To buy", style = MaterialTheme.typography.labelLarge)
+            Row(Modifier.padding(all = dimensionResource(id = R.dimen.padding_big))) {
+                Text(
+                    text = stringResource(R.string.to_buy),
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
             Card(
                 Modifier
                     //.fillMaxWidth()
-                    .padding(all = 5.dp),
+                    .padding(all = dimensionResource(id = R.dimen.padding_medium)),
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)
             ) {
                 Column() {
@@ -194,7 +218,7 @@ fun FirstCard() {
                             receiverField = it.receiverField,
                             description = it.descriptionField
                         )
-                        Divider(thickness = 1.dp)
+                        HorizontalDivider(thickness = dimensionResource(id = R.dimen.padding_min))
                     }
                 }
             }
@@ -213,7 +237,7 @@ fun InnerCardFirst(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(all = 5.dp)
+            .padding(all = dimensionResource(id = R.dimen.padding_medium))
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
@@ -225,27 +249,27 @@ fun InnerCardFirst(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Icon(
                 imageVector = Icons.Filled.AccessTime,
-                contentDescription = "Localized description"
+                contentDescription = stringResource(R.string.execution_time)
             )
             Text(
                 text = timeField,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 5.dp)
+                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
             )
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Icon(
-                imageVector = Icons.Filled.Shortcut,
-                contentDescription = "Localized description"
+                imageVector = Icons.AutoMirrored.Filled.Shortcut,
+                contentDescription = stringResource(R.string.task_received_icon)
             )
             Text(
                 text = receiverField,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 5.dp)
+                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
             )
         }
         Text(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
             text = description,
             style = MaterialTheme.typography.bodyMedium,
             // color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -263,7 +287,10 @@ fun InnerCardSecond(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(start = 5.dp, end = 5.dp)
+            .padding(
+                start = dimensionResource(id = R.dimen.padding_medium),
+                end = dimensionResource(id = R.dimen.padding_medium)
+            )
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -273,19 +300,24 @@ fun InnerCardSecond(
             Text(
                 text = firstField,
                 style = MaterialTheme.typography.labelMedium,
-                modifier = Modifier.padding(start = 5.dp),
+                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium)),
             )
-            //Text(text = "secondText", style = MaterialTheme.typography.bodyLarge)
             Checkbox(
                 checked = checkboxData,
                 onCheckedChange = { },
-                modifier = Modifier.paddingFromBaseline(top = 0.dp, bottom = 0.dp),
+                modifier = Modifier.paddingFromBaseline(
+                    top = dimensionResource(id = R.dimen.padding_zero),
+                    bottom = dimensionResource(id = R.dimen.padding_zero)
+                ),
             )
         }
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(bottom = 10.dp, end = 5.dp),
+                .padding(
+                    bottom = dimensionResource(id = R.dimen.padding_big),
+                    end = dimensionResource(id = R.dimen.padding_medium)
+                ),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -305,15 +337,25 @@ fun SecondCard() {
         ItemBuyed("Sams for me3", true, " for friend Stas3", "$ 200"),
         ItemBuyed("Sams for me4", false, " for friend Stas4", "$ 5"),
     )
-    Card(Modifier.padding(start = 2.dp, end = 2.dp, top = 5.dp, bottom = 5.dp)) {
+    Card(
+        Modifier.padding(
+            start = dimensionResource(id = R.dimen.padding_small),
+            end = dimensionResource(id = R.dimen.padding_small),
+            top = dimensionResource(id = R.dimen.padding_medium),
+            bottom = dimensionResource(id = R.dimen.padding_medium)
+        )
+    ) {
         Column(Modifier.fillMaxWidth()) {
-            Row(Modifier.padding(all = 10.dp)) {
-                Text(text = "Buyed", style = MaterialTheme.typography.labelLarge)
+            Row(Modifier.padding(all = dimensionResource(id = R.dimen.padding_big))) {
+                Text(
+                    text = stringResource(R.string.buyed),
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
             Card(
                 Modifier
                     .fillMaxWidth()
-                    .padding(all = 5.dp),
+                    .padding(all = dimensionResource(id = R.dimen.padding_medium)),
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.scrim)
             ) {
                 Column() {
@@ -324,7 +366,7 @@ fun SecondCard() {
                             secondField = it.secondField,
                             costValue = it.costValue
                         )
-                        Divider(thickness = 1.dp)
+                        HorizontalDivider(thickness = dimensionResource(id = R.dimen.padding_min))
                     }
                 }
             }
