@@ -15,14 +15,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Shortcut
 import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DoneOutline
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandCircleDown
-import androidx.compose.material.icons.filled.Shortcut
-import androidx.compose.material.icons.outlined.Sort
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -45,14 +45,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.seerhii.kurochka.buyme.R
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectionMenu() {
-    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
+    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5") // owner list
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
     ExposedDropdownMenuBox(
@@ -125,6 +124,7 @@ fun FirstTape() {
                 top = dimensionResource(id = R.dimen.padding_medium)
             )
             .fillMaxWidth(1f),
+        verticalAlignment = Alignment.CenterVertically
         // horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(Modifier.weight(3f, true)) {
@@ -257,16 +257,42 @@ fun InnerCardFirst(
                 modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
             )
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.Shortcut,
-                contentDescription = stringResource(R.string.task_received_icon)
-            )
-            Text(
-                text = receiverField,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(Modifier.weight(0.5f, true)) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Shortcut,
+                    contentDescription = stringResource(R.string.task_received_icon)
+                )
+                Text(
+                    text = receiverField,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
+                )
+            }
+            Row(Modifier.weight(0.5f, true), horizontalArrangement = Arrangement.End) {
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.DoneOutline,
+                        contentDescription = stringResource(R.string.done_icon)
+                    )
+                }
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = stringResource(R.string.edit_icon)
+                    )
+                }
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(R.string.delete_icon)
+                    )
+                }
+            }
         }
         Text(
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_medium)),
@@ -377,7 +403,7 @@ fun SecondCard() {
 @Composable
 fun HomePage() {
     LazyColumn() {
-        item { FirstTape() }
+       // item { FirstTape() }
         item { SecondTape() }
         item { FirstCard() }
         item { SecondCard() }
