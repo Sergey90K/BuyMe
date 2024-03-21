@@ -1,16 +1,26 @@
 package com.seerhii.kurochka.buyme.ui.homePage
 
 import android.content.res.Configuration
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Shortcut
 import androidx.compose.material.icons.automirrored.outlined.Sort
@@ -19,10 +29,12 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DoneOutline
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExpandCircleDown
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -43,17 +55,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.seerhii.kurochka.buyme.R
+import com.seerhii.kurochka.buyme.network.ItemNet
+import com.seerhii.kurochka.buyme.ui.AppViewModelProvider
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
+import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectionMenu() {
-    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5") // owner list
+fun SelectionMenu(
+    listOptionsUiState: OwnerOptions,
+    selectedOptionsString: String,
+    selectOptions: (String) -> Unit
+) {
+    // val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5") // owner list
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    // var selectedOptionText by remember { mutableStateOf(options[0]) }
     ExposedDropdownMenuBox(
         modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_small)),
         expanded = expanded,
@@ -64,7 +88,7 @@ fun SelectionMenu() {
                 .menuAnchor()
                 .clip(CircleShape),
             readOnly = true,
-            value = selectedOptionText,
+            value = selectedOptionsString,
             onValueChange = {},
             //label = { Text("Label") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -75,11 +99,11 @@ fun SelectionMenu() {
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            options.forEach { selectionOption ->
+            listOptionsUiState.options.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(selectionOption) },
                     onClick = {
-                        selectedOptionText = selectionOption
+                        selectOptions(selectionOption)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -90,9 +114,9 @@ fun SelectionMenu() {
 }
 
 @Composable
-fun SortedMenu() {
+fun SortedMenu(sortAboutTime: () -> Unit) {
     OutlinedButton(
-        onClick = {},
+        onClick = { sortAboutTime() },
         Modifier
             .size(
                 width = dimensionResource(id = R.dimen.icon_width),
@@ -128,7 +152,7 @@ fun FirstTape() {
         // horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(Modifier.weight(3f, true)) {
-            SelectionMenu()
+            //  SelectionMenu(listOptionsUiState, selectedOptionsString)
         }
         Row(Modifier.weight(0.5f, true)) {
             IconButton(onClick = { }) {
@@ -142,52 +166,62 @@ fun FirstTape() {
 }
 
 @Composable
-fun SecondTape() {
+fun SecondTape(
+    listOptionsUiState: OwnerOptions,
+    selectedOptionsString: String,
+    selectOptions: (String) -> Unit,
+    sortAboutTime: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.padding(all = dimensionResource(id = R.dimen.padding_medium))
     ) {
         Row(Modifier.weight(1f, true)) {
-            SelectionMenu()
+            SelectionMenu(listOptionsUiState, selectedOptionsString, selectOptions)
         }
         Row(Modifier.weight(1f, true)) {
-            SortedMenu()
+            SortedMenu(sortAboutTime)
         }
     }
 }
 
 @Composable
-fun FirstCard() {
-    val data = listOf<Item>(
-        Item(
-            "Sam text for think",
-            "120 pcs",
-            "20.03.2024",
-            "Stas V",
-            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
-        ),
-        Item(
-            "Sam text for think 2",
-            "12 pcs",
-            "5.05.2020",
-            "Serhii V",
-            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
-        ),
-        Item(
-            "Sam text for think 3",
-            "20 pcs",
-            "6.08.2014",
-            "Vasja M",
-            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
-        ),
-        Item(
-            "Sam text for think 4",
-            "50 pcs",
-            "29.09.2028",
-            "Katja S",
-            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
-        ),
-    )
+fun FirstCard(
+    homeUiState: BuyMeState,
+    doneItem: KFunction1<Int, Unit>,
+    editItem: KFunction1<Int, Unit>,
+    deleteItem: KFunction1<Int, Unit>
+) {
+//    val data = listOf<Item>(
+//        Item(
+//            "Sam text for think",
+//            "120 pcs",
+//            "20.03.2024",
+//            "Stas V",
+//            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
+//        ),
+//        Item(
+//            "Sam text for think 2",
+//            "12 pcs",
+//            "5.05.2020",
+//            "Serhii V",
+//            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
+//        ),
+//        Item(
+//            "Sam text for think 3",
+//            "20 pcs",
+//            "6.08.2014",
+//            "Vasja M",
+//            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
+//        ),
+//        Item(
+//            "Sam text for think 4",
+//            "50 pcs",
+//            "29.09.2028",
+//            "Katja S",
+//            "You need to buy something and so on. It is also fashionable for the inscription to be larger than one page."
+//        ),
+//    )
     Card(
         Modifier.padding(
             start = dimensionResource(id = R.dimen.padding_small),
@@ -210,13 +244,17 @@ fun FirstCard() {
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary)
             ) {
                 Column() {
-                    for (it in data) {
+                    for (it in homeUiState as List<ItemNet>  /*data*/) {
                         InnerCardFirst(
-                            firstField = it.firstField,
-                            secondField = it.secondField,
-                            timeField = it.timeField,
-                            receiverField = it.receiverField,
-                            description = it.descriptionField
+                            firstField = it.name,//it.firstField,
+                            secondField = it.amount + it.unit, //it.secondField,
+                            timeField = it.date, //it.timeField,
+                            receiverField = it.ownerOrDoes, //it.receiverField,
+                            description = it.comment, //it.descriptionField
+                            doneItem,
+                            editItem,
+                            deleteItem,
+                            idUser = it.id
                         )
                         HorizontalDivider(thickness = dimensionResource(id = R.dimen.padding_min))
                     }
@@ -232,7 +270,11 @@ fun InnerCardFirst(
     secondField: String,
     timeField: String,
     receiverField: String,
-    description: String
+    description: String,
+    doneItem: KFunction1<Int, Unit>,
+    editItem: KFunction1<Int, Unit>,
+    deleteItem: KFunction1<Int, Unit>,
+    idUser: Int
 ) {
     Column(
         Modifier
@@ -274,19 +316,19 @@ fun InnerCardFirst(
                 )
             }
             Row(Modifier.weight(0.5f, true), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = { doneItem(idUser) }) {
                     Icon(
                         imageVector = Icons.Filled.DoneOutline,
                         contentDescription = stringResource(R.string.done_icon)
                     )
                 }
-                IconButton(onClick = { }) {
+                IconButton(onClick = { editItem(idUser) }) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = stringResource(R.string.edit_icon)
                     )
                 }
-                IconButton(onClick = { }) {
+                IconButton(onClick = { deleteItem(idUser) }) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.delete_icon)
@@ -356,13 +398,13 @@ fun InnerCardSecond(
 }
 
 @Composable
-fun SecondCard() {
-    val data = listOf<ItemBuyed>(
-        ItemBuyed("Sams for me", true, " for friend Stas", "$ 5000"),
-        ItemBuyed("Sams for me2", false, " for friend Stas2", "$ 50"),
-        ItemBuyed("Sams for me3", true, " for friend Stas3", "$ 200"),
-        ItemBuyed("Sams for me4", false, " for friend Stas4", "$ 5"),
-    )
+fun SecondCard(doneUiState: BuyMeState) {
+//    val data = listOf<ItemBuyed>(
+//        ItemBuyed("Sams for me", true, " for friend Stas", "$ 5000"),
+//        ItemBuyed("Sams for me2", false, " for friend Stas2", "$ 50"),
+//        ItemBuyed("Sams for me3", true, " for friend Stas3", "$ 200"),
+//        ItemBuyed("Sams for me4", false, " for friend Stas4", "$ 5"),
+//    )
     Card(
         Modifier.padding(
             start = dimensionResource(id = R.dimen.padding_small),
@@ -385,12 +427,12 @@ fun SecondCard() {
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.scrim)
             ) {
                 Column() {
-                    for (it in data) {
+                    for (it in doneUiState as List<ItemNet>) {
                         InnerCardSecond(
-                            firstField = it.firstField,
-                            checkboxData = it.checkboxData,
-                            secondField = it.secondField,
-                            costValue = it.costValue
+                            firstField = it.name, //it.firstField,
+                            checkboxData = true, //it.checkboxData,
+                            secondField = it.comment,//it.secondField,
+                            costValue = "Value added after add on server ",//it.costValue
                         )
                         HorizontalDivider(thickness = dimensionResource(id = R.dimen.padding_min))
                     }
@@ -401,12 +443,155 @@ fun SecondCard() {
 }
 
 @Composable
-fun HomePage() {
+fun HomePage(homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
+    val homeUiState by homeViewModel.allItemUiState.collectAsStateWithLifecycle()
+    val listOptionsUiState by homeViewModel.optionsForOwner.collectAsStateWithLifecycle()
+    val selectedOptionsString by homeViewModel.selectedOptionsOwner.collectAsStateWithLifecycle()
+    val doneUiState by homeViewModel.doneItemUiState.collectAsStateWithLifecycle()
+    Crossfade(
+        targetState = homeUiState,
+        label = "Box state",
+        animationSpec = tween(durationMillis = 800, easing = FastOutLinearInEasing)
+    ) { uiStateIn ->
+        when (uiStateIn) {
+            is BuyMeState.Success -> {
+                SuccessfulScreen(
+                    homeUiState = homeUiState,
+                    listOptionsUiState = listOptionsUiState,
+                    selectedOptionsString = selectedOptionsString,
+                    selectOptions = homeViewModel::selectOptionsForOwner,
+                    sortAboutTime = homeViewModel::sortAboutTime,
+                    doneItem = homeViewModel::doneItem,
+                    editItem = homeViewModel::editItem,
+                    deleteItem = homeViewModel::deleteItem,
+                    doneUiState = doneUiState
+                )
+            }
+
+            is BuyMeState.Loading -> {
+                LoadingScreen()
+            }
+
+            is BuyMeState.Error -> {
+                ErrorScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun SuccessfulScreen(
+    homeUiState: BuyMeState,
+    listOptionsUiState: OwnerOptions,
+    selectedOptionsString: String,
+    selectOptions: (String) -> Unit,
+    sortAboutTime: () -> Unit,
+    doneItem: KFunction1<Int, Unit>,
+    editItem: KFunction1<Int, Unit>,
+    deleteItem: KFunction1<Int, Unit>,
+    doneUiState: BuyMeState
+) {
     LazyColumn() {
-       // item { FirstTape() }
-        item { SecondTape() }
-        item { FirstCard() }
-        item { SecondCard() }
+        // item { FirstTape() }
+        item { SecondTape(listOptionsUiState, selectedOptionsString, selectOptions, sortAboutTime) }
+        item { FirstCard(homeUiState, doneItem, editItem, deleteItem) }
+        item { SecondCard(doneUiState) }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Box(contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.loading),
+                style = MaterialTheme.typography.displayLarge,
+                modifier = Modifier.padding(all = dimensionResource(R.dimen.padding_small))
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+            CircularProgressIndicator(
+                modifier = Modifier.width(150.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+fun ErrorScreen() {
+    Box(contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1F, true)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_connection_error),
+                    contentDescription = stringResource(R.string.connection_error)
+                )
+                Text(
+                    text = stringResource(R.string.failed_to_load_data_from_server),
+                    style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+                )
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                ShowButton(
+                    navigateToQuestionPage = {},
+                    retryAction = {},
+                    modifier = Modifier
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowButton(
+    navigateToQuestionPage: () -> Unit,
+    retryAction: () -> Unit,
+    modifier: Modifier
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(R.dimen.padding_medium)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Button(
+            modifier = Modifier.weight(1f),
+            onClick = retryAction
+        ) {
+            Text(stringResource(R.string.retry))
+        }
+        Button(
+            modifier = Modifier.weight(1f),
+            onClick = navigateToQuestionPage,
+            enabled = true
+        ) {
+            Text(stringResource(R.string.offline))
+        }
     }
 }
 
@@ -417,7 +602,7 @@ fun HomePage() {
 @Composable
 fun GreetingPreviewTopPanel() {
     BuyMeTheme {
-        HomePage()
+        ErrorScreen()
     }
 }
 

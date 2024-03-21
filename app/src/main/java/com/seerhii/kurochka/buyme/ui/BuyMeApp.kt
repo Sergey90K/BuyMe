@@ -11,12 +11,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.seerhii.kurochka.buyme.ui.addNewItemPage.AddNewItemPage
 import com.seerhii.kurochka.buyme.ui.appointToBuyPage.AppointToBuyPage
 import com.seerhii.kurochka.buyme.ui.approveDialog.ApproveDialog
 import com.seerhii.kurochka.buyme.ui.homePage.HomePage
+import com.seerhii.kurochka.buyme.ui.homePage.HomeViewModel
 import com.seerhii.kurochka.buyme.ui.theme.BuyMeTheme
 import com.seerhii.kurochka.buyme.ui.topAndBottomPanel.BottomPanel
 import com.seerhii.kurochka.buyme.ui.topAndBottomPanel.TopPanel
@@ -25,6 +31,7 @@ import com.seerhii.kurochka.buyme.ui.topAndBottomPanel.TopPanel
 @Composable
 fun BuyMeApp() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { TopPanel(scrollBehavior) },
@@ -40,10 +47,10 @@ fun BuyMeApp() {
                 .padding(it),
             color = MaterialTheme.colorScheme.background
         ) {
-            HomePage()
-           // AddNewItemPage()
-           // AppointToBuyPage()
-           // ApproveDialog()
+            //HomePage()
+             AddNewItemPage()
+            // AppointToBuyPage()
+            // ApproveDialog()
         }
     }
 }
